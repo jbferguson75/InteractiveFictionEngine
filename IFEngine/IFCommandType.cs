@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace InteractiveFictionEngine
 {
-	public class IFAction
+	public enum IFCommandType
 	{
+		Quit,
+		Help,
+		Info,
+		Movement,
+		Unknown,
+		Other
 	}
 }

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveFictionTestApplication", "InteractiveFictionEngine\InteractiveFictionTestApplication.csproj", "{F3FDF268-013C-43A3-82EB-175C27F4B770}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFEngine", "IFEngine\IFEngine.csproj", "{11FB7CBD-B65A-4329-962B-1CAF673C8EB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveFictionEngine", "IFEngine\InteractiveFictionEngine.csproj", "{11FB7CBD-B65A-4329-962B-1CAF673C8EB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
