@@ -11,6 +11,7 @@ namespace InteractiveFictionEngine
 		Quit,
 		Help,
 		Info,
+		Save,
 		Movement,
 		Unknown,
 		Other
