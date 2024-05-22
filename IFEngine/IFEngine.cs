@@ -30,7 +30,15 @@ namespace InteractiveFictionEngine
 			
 				if (parser.ParseCommand(userString, out command))
 				{
-					//handle command here
+					switch (command.commandType)
+					{
+						case IFCommandType.Help:
+							Console.WriteLine(game.HelpText);
+							break;
+						case IFCommandType.Info: 
+							Console.WriteLine(game.InfoText); 
+							break;
+					}
 				}
 				else
 				{
