@@ -12,18 +12,28 @@ namespace InteractiveFictionEngine
 
 		public IFParser() 
 		{ 
-			LoadCommands();
+			LoadOtherCommands();
+			LoadMovementCommands();
 		}
 
-		public void LoadCommands()
+		private void LoadOtherCommands()
 		{
-			commands.Add(new IFCommand() { commandString = "quit"});
-			commands.Add(new IFCommand() { commandString = "info" });
-			commands.Add(new IFCommand() { commandString = "help" });
+			commands.Add(new IFCommand() { commandString = "quit", commandType = IFCommandType.Quit});
+			commands.Add(new IFCommand() { commandString = "info", commandType = IFCommandType.Info });
+			commands.Add(new IFCommand() { commandString = "help", commandType = IFCommandType.Help });
 		}
+
+		private void LoadMovementCommands()
+		{
+			foreach (var value in Enum.GetValues(typeof(IFDirection)).Cast<IFDirection>())
+			{
+				commands.Add(new IFCommand() { commandString = value.ToString(), commandType = IFCommandType.Movement });
+			}
+		}
+
 		public bool ParseCommand(string commandStr, out IFCommand command)
 		{
-			var command_list = commands.FindAll(o => commandStr.Contains(o.commandString));
+			var command_list = commands.FindAll(o => commandStr.Equals(o.commandString.ToLower()));
 
 			if (command_list.Count == 1 )
 			{

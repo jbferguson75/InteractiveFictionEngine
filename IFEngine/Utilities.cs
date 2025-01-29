@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace InteractiveFictionEngine
+{
+	internal class Utilities
+	{
+		internal static void EpicWriteLine(String text)
+		{
+			String[] words = text.Split(' ');
+			StringBuilder buffer = new StringBuilder();
+
+			foreach (String word in words)
+			{
+				buffer.Append(word);
+
+				if (buffer.Length >= Console.WindowWidth)
+				{
+					String line = buffer.ToString().Substring(0, buffer.Length - word.Length);
+					Console.WriteLine(line);
+					buffer.Clear();
+					buffer.Append(word);
+				}
+
+				buffer.Append(" ");
+
+			}
+
+			Console.WriteLine(buffer.ToString());
+		}
+	}
+}
