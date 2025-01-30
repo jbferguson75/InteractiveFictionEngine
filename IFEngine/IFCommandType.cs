@@ -13,6 +13,8 @@ namespace InteractiveFictionEngine
 		Info,
 		Save,
 		Movement,
+		Manipulation,
+		Inventory,
 		Unknown,
 		Other
 	}

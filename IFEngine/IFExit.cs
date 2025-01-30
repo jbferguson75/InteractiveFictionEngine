@@ -11,6 +11,7 @@ namespace InteractiveFictionEngine
 		public IFDirection? direction { get; set; } = null;
 		public string customDirection { get; set; } = string.Empty;
 		public int roomId { get; set; } = 0;
-		public List<string> commands { get; set; } = new List<string>();
+		public bool isVisible { get; set; } = true;
+		public bool isLocked { get; set; } = false;
 	}
 }

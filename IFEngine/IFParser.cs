@@ -14,6 +14,7 @@ namespace InteractiveFictionEngine
 		{ 
 			LoadOtherCommands();
 			LoadMovementCommands();
+			LoadManipulationCommands();
 		}
 
 		private void LoadOtherCommands()
@@ -21,6 +22,7 @@ namespace InteractiveFictionEngine
 			commands.Add(new IFCommand() { commandString = "quit", commandType = IFCommandType.Quit});
 			commands.Add(new IFCommand() { commandString = "info", commandType = IFCommandType.Info });
 			commands.Add(new IFCommand() { commandString = "help", commandType = IFCommandType.Help });
+			commands.Add(new IFCommand() { commandString = "inventory", commandType = IFCommandType.Inventory });
 		}
 
 		private void LoadMovementCommands()
@@ -31,14 +33,38 @@ namespace InteractiveFictionEngine
 			}
 		}
 
+		private void LoadManipulationCommands()
+		{
+			foreach (var value in Enum.GetValues(typeof(IFManipulations)).Cast<IFManipulations>())
+			{
+				commands.Add(new IFCommand() { commandString = value.ToString(), commandType = IFCommandType.Manipulation });
+			}
+		}
+
 		public bool ParseCommand(string commandStr, out IFCommand command)
 		{
-			var command_list = commands.FindAll(o => commandStr.Equals(o.commandString.ToLower()));
+			string[] word_list = commandStr.Split(' ');
 
-			if (command_list.Count == 1 )
+			if (word_list.Length > 0)
 			{
-				command = command_list[0];
-				return true;
+				var command_list = commands.FindAll(o => word_list[0].Equals(o.commandString.ToLower()));
+
+				if (command_list.Count == 1)
+				{
+					command = command_list[0];
+					command.objectString = string.Empty;
+
+					if (word_list.Length > 1)
+					{
+						for (int i=1; i<word_list.Length; i++)
+						{
+							command.objectString += word_list[i];
+							if (i < word_list.Length - 1)
+								command.objectString += " ";
+						}
+					}
+					return true;
+				}
 			}
 
 			command = new IFCommand() { commandType = IFCommandType.Unknown };

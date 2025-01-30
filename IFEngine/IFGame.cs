@@ -1,4 +1,6 @@
-﻿namespace InteractiveFictionEngine
+﻿using InteractiveFictionEngine.Items;
+
+namespace InteractiveFictionEngine
 {
 	public class IFGame
 	{
@@ -12,6 +14,8 @@
 		{
 			InstructionText = "This is the sample content for the Interactive Fiction Game Engine.  This content is meant to test the abilities of the engine. ";
 			InstructionText += "Direct me with commands of 1 or 2 words.  (Should you get stuck, type \"help\" or \"info\" for some hints).";
+
+			#region Create Rooms
 
 			IFRoom driveway = new IFRoom() { RoomId = 1, Description = "Driveway\r\n\r\n" };
 			driveway.Description += "You are standing in the driveway of a regular blue and red brick house which stands to the east.  ";
@@ -138,8 +142,12 @@
 			coldRoom.Description += "This is a small room that sits under the front porch.  All of the walls are cement and the temperature is noticeably colder here. ";
 			coldRoom.Description += "On one wall there are shelves with various long-term food and supply storage along with various suitcases and other storage items.";
 
+			#endregion
+
+			#region Exits
+
 			//Connect exits for driveway
-			driveway.Exits.Add(new IFExit() { direction = IFDirection.East, roomId = entry.RoomId });
+			driveway.Exits.Add(new IFExit() { direction = IFDirection.East, roomId = entry.RoomId, isLocked = true }); ;
 
 			//Connect exits for entry
 			entry.Exits.Add(new IFExit() { direction = IFDirection.West, roomId = driveway.RoomId });
@@ -284,6 +292,42 @@
 
 			coldRoom.Exits.Add(new IFExit() { direction = IFDirection.East, roomId = mechanicalRoom.RoomId });
 
+			#endregion
+
+			#region Create Items
+
+			Key houseKey = new Key()
+			{
+				itemId = 1,
+				name = "small silver key",
+				description = "You see a small silver key typically used in house doors. This key looks like it is well-used."
+			};
+
+			houseKey.tags.Add("silver key");
+			houseKey.tags.Add("small key");
+			houseKey.tags.Add("small silver key");
+
+			driveway.Items.Add(houseKey);
+
+			Door frontDoor = new Door()
+			{
+				itemId = 2,
+				name = "Front Door",
+				description = "It's a pretty yellow door with a flowery wreath hanging from it.",
+				exit = driveway.Exits.FindAll(o => o.direction == IFDirection.East).FirstOrDefault(),
+				keyid = 1
+			};
+
+			frontDoor.tags.Add("front door");
+			frontDoor.tags.Add("yellow door");
+			frontDoor.tags.Add("east door");
+
+			driveway.Items.Add(frontDoor);
+
+			#endregion
+
+			#region Add Rooms to Game
+
 			//Add All rooms to the Game
 
 			Rooms.Add(driveway.RoomId, driveway);
@@ -317,6 +361,9 @@
 			Rooms.Add(mechanicalRoom.RoomId, mechanicalRoom);
 			Rooms.Add(coldRoom.RoomId, coldRoom);
 
+			#endregion
+
+
 			startRoomId = 1;
 		}
 
@@ -334,6 +381,7 @@
 			Aliases.Add("se", "southeast");
 			Aliases.Add("u", "up");
 			Aliases.Add("d", "down");
+			Aliases.Add("i", "inventory");
 		}
 
 		public void LoadGame(string file_name)
