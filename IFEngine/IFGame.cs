@@ -383,6 +383,8 @@ namespace InteractiveFictionEngine
 			Aliases.Add("u", "up");
 			Aliases.Add("d", "down");
 			Aliases.Add("i", "inventory");
+			Aliases.Add("ex", "examine");
+			Aliases.Add("look", "examine");
 		}
 
 		public void LoadGame(string file_name)

@@ -49,10 +49,7 @@ namespace InteractiveFictionEngine
 
 				userString = Console.ReadLine();
 
-				if (userString != null && game.Aliases.ContainsKey(userString))
-				{
-					userString = game.Aliases[userString];
-				}
+				userString = ReplaceWithAliases(userString);
 			
 				if (userString != null && parser.ParseCommand(userString, out command))
 				{
@@ -81,6 +78,24 @@ namespace InteractiveFictionEngine
 					Console.WriteLine("Unknown Command.");
 				}
 			}
+		}
+
+		private string? ReplaceWithAliases(string? userString)
+		{
+			if (userString == null)
+				return userString;
+
+			var wordList = userString.Split(' ');
+
+			foreach (var word in wordList)
+			{
+				if (game.Aliases.ContainsKey(word))
+				{
+					userString = userString.Replace(word, game.Aliases[word]);
+				}
+			}
+
+			return userString;
 		}
 
 		private void ExecuteInventory()
