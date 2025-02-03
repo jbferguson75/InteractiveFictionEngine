@@ -1,20 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Catalyst;
+using Mosaik.Core;
+using System.Text.Json;
 
 namespace InteractiveFictionEngine
 {
 	public class IFParser
 	{
 		public List<IFCommand> commands = new List<IFCommand>();
+		private Pipeline nlp;
 
 		public IFParser() 
 		{ 
 			LoadOtherCommands();
 			LoadMovementCommands();
 			LoadManipulationCommands();
+
+			Catalyst.Models.English.Register();
+
+			Storage.Current = new DiskStorage("catalyst-models");
+			nlp = Pipeline.For(Language.English);
 		}
 
 		private void LoadOtherCommands()
@@ -43,33 +47,143 @@ namespace InteractiveFictionEngine
 
 		public bool ParseCommand(string commandStr, out IFCommand command)
 		{
-			string[] word_list = commandStr.Split(' ');
+			command = new IFCommand() { commandType = IFCommandType.Unknown };
 
-			if (word_list.Length > 0)
+			if (commandStr.Length > 0)
 			{
-				var command_list = commands.FindAll(o => word_list[0].Equals(o.commandString.ToLower()));
 
-				if (command_list.Count == 1)
+				var doc = new Document(commandStr, Language.English);
+				nlp.ProcessSingle(doc);
+
+				using var jDoc = JsonDocument.Parse(doc.ToJson());
+
+				Symbol? s = JsonSerializer.Deserialize<Symbol>(doc.ToJson());
+
+				if (s == null)
 				{
-					command = command_list[0];
-					command.objectString = string.Empty;
+					return false;
+				}
 
-					if (word_list.Length > 1)
-					{
-						for (int i=1; i<word_list.Length; i++)
-						{
-							command.objectString += word_list[i];
-							if (i < word_list.Length - 1)
-								command.objectString += " ";
-						}
-					}
+				List<SentenceParts> parts = BuildSymbolList(doc.ToJson(), commandStr);
+
+				command = FindCommand(parts);
+
+				if (command != null && command.commandType != IFCommandType.Unknown)
+				{
 					return true;
 				}
 			}
-
-			command = new IFCommand() { commandType = IFCommandType.Unknown };
-
 			return false;
+		}
+
+		private static List<SentenceParts> BuildSymbolList(string json, string original)
+		{
+			List<SentenceParts> result = new List<SentenceParts>();
+			Symbol? s = JsonSerializer.Deserialize<Symbol>(json);
+
+			if (s == null)	
+			{ 
+				return result; 
+			}
+
+			foreach (var l1 in s.TokensData)
+			{
+				foreach (var l2 in l1)
+				{
+					string word = original.Substring(l2.Bounds[0], l2.Bounds[1] - l2.Bounds[0] + 1);
+					string pos = l2.Tag;
+
+					result.Add(new SentenceParts() { word = word, POS = pos });
+				}
+			}
+
+			return result;
+		}
+
+		private IFCommand FindCommand(List<SentenceParts> parts)
+		{
+			IFCommand command;
+
+			if (parts.Count == 1)
+			{
+				var command_list = commands.FindAll(o => parts[0].word.Equals(o.commandString.ToLower()));
+				if (command_list.Count == 1)
+					return command_list[0];
+			}
+			else if (parts.Count > 1)
+			{
+				string verb = string.Empty;
+
+				foreach (var word in parts)
+				{
+					if (word.POS == "VERB")
+					{
+						verb = word.word;
+						break;
+					}
+				}
+
+				int skip = 0;
+
+				if (verb ==  string.Empty)
+				{
+					verb = parts[0].word;
+					skip = 1;
+				}
+
+				var command_list = commands.FindAll(o => verb.Equals(o.commandString.ToLower()));
+
+				if (command_list.Count == 1)
+				{
+					command = new IFCommand(command_list[0]);
+					
+
+					for (int i = 0 + skip; i < parts.Count; i++)
+					{
+						bool found = false;
+
+						while (i < parts.Count && (parts[i].POS == "ADJ" || parts[i].POS == "NOUN"))
+						{
+							command.objectString += parts[i].word + " ";
+							i++;
+							found = true;
+						}
+
+						if (found)
+						{
+							command.objectString = command.objectString.Substring(0, command.objectString.Length - 1);
+							break;
+						}
+					}
+					if (command.commandString != string.Empty)
+						return command;
+				}
+			}
+
+			return new IFCommand() { commandType = IFCommandType.Unknown };
+		}
+
+		public class Symbol
+		{
+			public string Language { get; set; }
+			public int Length { get; set; }
+			public string Value { get; set; }
+			public List<List<Word>> TokensData { get; set; }
+		}
+
+		public class Word
+		{
+			public List<int> Bounds { get; set; }
+			public string Tag { get; set; }
+		}
+
+		public class SentenceParts
+		{
+			public string word { get; set; } = String.Empty;
+
+			public string Lemma { get; set; } = String.Empty;
+			public string POS { get; set; } = String.Empty;
+
 		}
 	}
 }

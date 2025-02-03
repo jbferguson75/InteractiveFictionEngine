@@ -10,16 +10,16 @@ namespace InteractiveFictionEngine
 	public enum IFManipulations
 	{
 		[Description("examine")]
-		Examine,
+		EXAMINE,
 		[Description("search")]
-		Search,
+		SEARCH,
 		[Description("get")]
-		Get,
+		GET,
 		[Description("unlock")]
-		Unlock,
+		UNLOCK,
 		[Description("lock")]
-		Lock,
+		LOCK,
 		[Description("drop")]
-		Drop
+		DROP
 	}
 }

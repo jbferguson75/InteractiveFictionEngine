@@ -17,16 +17,16 @@ namespace InteractiveFictionEngine.Items
 		{
 			switch (manipulation)
 			{
-				case IFManipulations.Examine:
+				case IFManipulations.EXAMINE:
 					DoExamine();
 					break;
-				case IFManipulations.Get:
+				case IFManipulations.GET:
 					DoGet(character, room);
 					break;
-				case IFManipulations.Drop:
+				case IFManipulations.DROP:
 					DoDrop(character, room);
 					break;
-				case IFManipulations.Search:
+				case IFManipulations.SEARCH:
 					DoSearch();
 					break;
 				default:

@@ -108,7 +108,7 @@ namespace InteractiveFictionEngine
 			if (items.Count == 1)
 			{
 				Console.WriteLine();
-				items[0].DoAction(Enum.Parse<IFManipulations>(command.commandString), ref character, game.Rooms[character.currentLocation]);
+				items[0].DoAction(Enum.Parse<IFManipulations>(command.commandString.ToUpper()), ref character, game.Rooms[character.currentLocation]);
 			}
 			else if (items.Count > 1) 
 			{
