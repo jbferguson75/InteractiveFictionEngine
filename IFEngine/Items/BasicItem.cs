@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace InteractiveFictionEngine.Items
 {
-	internal class Key : IFItem
+	internal class BasicItem : IFItem
 	{
-		public Key() 
+		public BasicItem() 
 		{
 			tags.Add("key");
 		}
@@ -27,7 +27,7 @@ namespace InteractiveFictionEngine.Items
 					DoDrop(character, room);
 					break;
 				case IFManipulations.SEARCH:
-					DoSearch();
+					DoSearch(character, room);
 					break;
 				default:
 					DoOther();
@@ -35,18 +35,6 @@ namespace InteractiveFictionEngine.Items
 			}
 		}
 
-		private void DoGet(IFCharacter character, IFRoom room)
-		{
-			room.Items.Remove(this);
-			character.inventory.Add(this);
-			Utilities.EpicWriteLine("You pick up " + this.name + " and place it in your pocket.");
-		}
-
-		private void DoDrop(IFCharacter character, IFRoom room)
-		{
-			character.inventory.Remove(this);
-			room.Items.Add(this);
-			Utilities.EpicWriteLine("You dropped " + this.name + ".");
-		}
+		
 	}
 }

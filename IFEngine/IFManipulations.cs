@@ -20,6 +20,8 @@ namespace InteractiveFictionEngine
 		[Description("lock")]
 		LOCK,
 		[Description("drop")]
-		DROP
+		DROP,
+		[Description("read")]
+		READ
 	}
 }

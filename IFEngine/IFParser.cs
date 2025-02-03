@@ -114,8 +114,11 @@ namespace InteractiveFictionEngine
 			{
 				string verb = string.Empty;
 
+				int i = 0;
+
 				foreach (var word in parts)
 				{
+					i++;
 					if (word.POS == "VERB")
 					{
 						verb = word.word;
@@ -123,12 +126,10 @@ namespace InteractiveFictionEngine
 					}
 				}
 
-				int skip = 0;
-
 				if (verb ==  string.Empty)
 				{
 					verb = parts[0].word;
-					skip = 1;
+					i = 1;
 				}
 
 				var command_list = commands.FindAll(o => verb.Equals(o.commandString.ToLower()));
@@ -138,7 +139,7 @@ namespace InteractiveFictionEngine
 					command = new IFCommand(command_list[0]);
 					
 
-					for (int i = 0 + skip; i < parts.Count; i++)
+					for (; i < parts.Count; i++)
 					{
 						bool found = false;
 

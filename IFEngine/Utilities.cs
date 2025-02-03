@@ -19,7 +19,7 @@ namespace InteractiveFictionEngine
 			{
 				buffer.Append(word);
 
-				if (buffer.Length >= Console.WindowWidth)
+				if (buffer.Length >= 80)
 				{
 					String line = buffer.ToString().Substring(0, buffer.Length - word.Length);
 					Console.WriteLine(line);

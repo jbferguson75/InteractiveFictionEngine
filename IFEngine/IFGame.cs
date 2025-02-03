@@ -296,12 +296,13 @@ namespace InteractiveFictionEngine
 
 			#region Create Items
 
-			Key houseKey = new Key()
+			BasicItem houseKey = new BasicItem()
 			{
 				itemId = 1,
 				name = "small silver key",
 				description = "You see a small silver key typically used in house doors. This key looks like it is well-used.", 
 				IsListed = true,
+				IsGettable = true
 			};
 
 			houseKey.tags.Add("silver key");
@@ -324,6 +325,37 @@ namespace InteractiveFictionEngine
 			frontDoor.tags.Add("east door");
 
 			driveway.Items.Add(frontDoor);
+
+			ContainerItem bookshelves = new ContainerItem()
+			{
+				itemId = 3,
+				name = "Bookshelves",
+				description = "You see 3 bookshelves lining the west wall.  They have glass doors and are full of books of very genre."
+			};
+
+			bookshelves.tags.Add("bookshelf");
+			bookshelves.tags.Add("bookshelves");
+			bookshelves.tags.Add("shelf");
+			bookshelves.tags.Add("shelves");
+
+			livingRoom.Items.Add(bookshelves);
+
+			ReadingItem blueBook = new ReadingItem()
+			{
+				itemId = 4,
+				name = "blue book",
+				description = "It's what looks like a very old and dusty book.  It looks like it's been around for centuries.",
+				IsListed = false,
+				IsVisible = false,
+				readingContent = "To open, say 'pbxrx'",
+				IsGettable = true
+			};
+
+			blueBook.tags.Add("book");
+			blueBook.tags.Add("blue book");
+
+			livingRoom.Items.Add(blueBook);
+			bookshelves.ContainedItemId = 4;
 
 			#endregion
 

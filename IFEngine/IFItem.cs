@@ -13,12 +13,13 @@ namespace InteractiveFictionEngine
 		public string description { get; set; } = string.Empty;
 		public bool IsVisible { get; set; } = true;
 		public bool IsListed { get; set; } = false;
+		public bool IsGettable { get; set; } = false;
 
 		public List<string> tags { get; set; } = new List<string>();
 
 		public abstract void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room);
 
-		internal virtual void DoSearch()
+		internal virtual void DoSearch(IFCharacter character, IFRoom room)
 		{
 			Utilities.EpicWriteLine("You find nothing.");
 		}
@@ -28,9 +29,30 @@ namespace InteractiveFictionEngine
 			Utilities.EpicWriteLine(description);
 		}
 
+		internal virtual void DoDrop(IFCharacter character, IFRoom room)
+		{
+			character.inventory.Remove(this);
+			room.Items.Add(this);
+			Utilities.EpicWriteLine("You dropped " + this.name + ".");
+		}
+
+		internal virtual void DoGet(IFCharacter character, IFRoom room)
+		{
+			if (IsGettable)
+			{
+				room.Items.Remove(this);
+				character.inventory.Add(this);
+				Utilities.EpicWriteLine("You pick up " + this.name + " and place it in your pocket.");
+			}
+			else
+			{
+				Utilities.EpicWriteLine("You can't seem to do that.");
+			}
+		}
+
 		internal virtual void DoOther()
 		{
-			Utilities.EpicWriteLine("I can't seem to do that.");
+			Utilities.EpicWriteLine("You can't seem to do that.");
 		}
 	}
 }

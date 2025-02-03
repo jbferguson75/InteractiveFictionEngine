@@ -23,7 +23,7 @@ namespace InteractiveFictionEngine.Items
 					DoExamine();
 					break;
 				case IFManipulations.SEARCH:
-					DoSearch();
+					DoSearch(character, room);
 					break;
 				case IFManipulations.UNLOCK:
 					DoUnlock(character);
