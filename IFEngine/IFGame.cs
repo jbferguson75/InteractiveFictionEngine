@@ -300,7 +300,8 @@ namespace InteractiveFictionEngine
 			{
 				itemId = 1,
 				name = "small silver key",
-				description = "You see a small silver key typically used in house doors. This key looks like it is well-used."
+				description = "You see a small silver key typically used in house doors. This key looks like it is well-used.", 
+				IsListed = true,
 			};
 
 			houseKey.tags.Add("silver key");

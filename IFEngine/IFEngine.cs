@@ -27,24 +27,26 @@ namespace InteractiveFictionEngine
 				IFRoom room = game.Rooms[character.currentLocation];
 
 				Console.WriteLine();
-				Utilities.EpicWriteLine(room.Description);
+				Utilities.EpicWriteLine(room.Description, ConsoleColor.Cyan);
 				
 				if (room.Items.Count > 0) { Console.WriteLine(); }
-				foreach(IFItem item in room.Items)
+				foreach(IFItem item in room.Items.FindAll(o => o.IsListed))
 				{
-					Utilities.EpicWriteLine(item.name);
+					Utilities.EpicWriteLine(item.name, ConsoleColor.Yellow);
 				}
 
 				if (room.Exits.Count > 0) { Console.WriteLine(); }
-				Console.Write("Obvious Exits: ");
+				string exitString = "Obvious Exits: ";
+
 				for (int i=0; i<room.Exits.Count; i++)
 				{
 					var exit = room.Exits[i];
-					Console.Write(exit.direction.ToString());
+					exitString += exit.direction.ToString();
 					if (i != room.Exits.Count - 1)
-						Console.Write(", ");
+						exitString += ", ";
 				}
-				Console.WriteLine();
+				Utilities.EpicWriteLine(exitString, ConsoleColor.Magenta);
+
 				userString = Console.ReadLine();
 
 				if (userString != null && game.Aliases.ContainsKey(userString))
@@ -102,8 +104,8 @@ namespace InteractiveFictionEngine
 		{
 			//Let's build an inventory of all the available items in the room and character inventory that match the command object
 
-			List<IFItem> items = game.Rooms[character.currentLocation].Items.FindAll(o => o.tags.Contains(command.objectString));
-			items.AddRange(character.inventory.FindAll(o => o.tags.Contains(command.objectString)));
+			List<IFItem> items = game.Rooms[character.currentLocation].Items.FindAll(o => o.tags.Contains(command.objectString) && o.IsVisible);
+			items.AddRange(character.inventory.FindAll(o => o.tags.Contains(command.objectString) && o.IsVisible));
 
 			if (items.Count == 1)
 			{

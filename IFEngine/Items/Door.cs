@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,6 +77,15 @@ namespace InteractiveFictionEngine.Items
 				Utilities.EpicWriteLine("You do not have the key to lock this door.");
 			}
 
+		}
+
+		internal override void DoExamine()
+		{
+			base.DoExamine();
+			if (!this.exit.isLocked)
+			{
+				Utilities.EpicWriteLine("The door is unlocked.");
+			}
 		}
 	}
 }

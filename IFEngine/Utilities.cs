@@ -8,10 +8,12 @@ namespace InteractiveFictionEngine
 {
 	internal class Utilities
 	{
-		internal static void EpicWriteLine(String text)
+		internal static void EpicWriteLine(String text, ConsoleColor color = ConsoleColor.White)
 		{
 			String[] words = text.Split(' ');
 			StringBuilder buffer = new StringBuilder();
+
+			Console.ForegroundColor = color;
 
 			foreach (String word in words)
 			{
@@ -28,8 +30,9 @@ namespace InteractiveFictionEngine
 				buffer.Append(" ");
 
 			}
-
+			
 			Console.WriteLine(buffer.ToString());
+			Console.ForegroundColor = ConsoleColor.White;
 		}
 	}
 }

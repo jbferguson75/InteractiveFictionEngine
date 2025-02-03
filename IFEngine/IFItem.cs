@@ -12,6 +12,7 @@ namespace InteractiveFictionEngine
 		public string name { get; set; } = string.Empty;
 		public string description { get; set; } = string.Empty;
 		public bool IsVisible { get; set; } = true;
+		public bool IsListed { get; set; } = false;
 
 		public List<string> tags { get; set; } = new List<string>();
 
