@@ -8,8 +8,8 @@ namespace InteractiveFictionEngine.Items
 {
 	internal class SayDoor : IFItem
 	{
-		public IFExit exit { get; set; }
-		public string word { get; set; }
+		public IFExit? exit { get; set; }
+		public string word { get; set; } = string.Empty;
 		public SayDoor() 
 		{
 			IsVisible = false;

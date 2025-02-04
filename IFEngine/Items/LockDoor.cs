@@ -9,7 +9,7 @@ namespace InteractiveFictionEngine.Items
 {
 	internal class LockDoor : IFItem
 	{
-		public IFExit exit { get; set; }
+		public IFExit? exit { get; set; }
 		public int keyid { get; set; }
 		public LockDoor() 
 		{
@@ -85,7 +85,7 @@ namespace InteractiveFictionEngine.Items
 		internal override void DoExamine()
 		{
 			base.DoExamine();
-			if (!this.exit.isLocked)
+			if (this.exit != null &&  !this.exit.isLocked)
 			{
 				Utilities.EpicWriteLine("The door is unlocked.");
 			}

@@ -96,7 +96,7 @@ namespace InteractiveFictionEngine
 			List<SentenceParts> result = new List<SentenceParts>();
 			Symbol? s = JsonSerializer.Deserialize<Symbol>(json);
 
-			if (s == null)	
+			if (s == null || s.TokensData == null)	
 			{ 
 				return result; 
 			}
@@ -105,10 +105,13 @@ namespace InteractiveFictionEngine
 			{
 				foreach (var l2 in l1)
 				{
-					string word = original.Substring(l2.Bounds[0], l2.Bounds[1] - l2.Bounds[0] + 1);
-					string pos = l2.Tag;
+					if (l2.Bounds != null && l2.Bounds.Count >= 2)
+					{
+						string word = original.Substring(l2.Bounds[0], l2.Bounds[1] - l2.Bounds[0] + 1);
+						string pos = l2.Tag;
 
-					result.Add(new SentenceParts() { word = word, POS = pos });
+						result.Add(new SentenceParts() { word = word, POS = pos });
+					}
 				}
 			}
 
@@ -182,16 +185,16 @@ namespace InteractiveFictionEngine
 
 		public class Symbol
 		{
-			public string Language { get; set; }
+			public string Language { get; set; } = string.Empty;
 			public int Length { get; set; }
-			public string Value { get; set; }
-			public List<List<Word>> TokensData { get; set; }
+			public string Value { get; set; } = string.Empty;
+			public List<List<Word>>? TokensData { get; set; }
 		}
 
 		public class Word
 		{
-			public List<int> Bounds { get; set; }
-			public string Tag { get; set; }
+			public List<int>? Bounds { get; set; }
+			public string Tag { get; set; } = string.Empty;
 		}
 
 		public class SentenceParts

@@ -8,7 +8,7 @@ namespace InteractiveFictionEngine.Items
 {
 	internal class ReadingItem : IFItem
 	{
-		public string readingContent {  get; set; }
+		public string readingContent {  get; set; } = string.Empty;
 
 		public override void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room, string word="")
 		{
