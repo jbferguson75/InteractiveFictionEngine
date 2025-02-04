@@ -62,7 +62,7 @@ namespace InteractiveFictionEngine
 				}
 				else
 				{
-					Console.WriteLine("Unknown Command.");
+					Console.WriteLine(game.UnknownCommandText);
 				}
 			}
 		}
@@ -175,12 +175,12 @@ namespace InteractiveFictionEngine
 				if (roomExits[0].isLocked)
 				{
 					Console.WriteLine();
-					Utilities.EpicWriteLine("The door seems to be locked.");
+					Utilities.EpicWriteLine(roomExits[0].LockedText);
 				}
 				else if (!roomExits[0].isVisible)
 				{
 					Console.WriteLine();
-					Utilities.EpicWriteLine("You can't seem to go that way.");
+					Utilities.EpicWriteLine(roomExits[0].InvisibleText);
 				}
 				else
 				{

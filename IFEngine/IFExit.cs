@@ -10,6 +10,8 @@ namespace InteractiveFictionEngine
 	{
 		public IFDirection? direction { get; set; } = null;
 		public string customDirection { get; set; } = string.Empty;
+		public string LockedText { get; set; } = "The door seems to be locked.";
+		public string InvisibleText {  get; set; } = "You can't seem to go that way.";
 		public int roomId { get; set; } = 0;
 		public bool isVisible { get; set; } = true;
 		public bool isLocked { get; set; } = false;

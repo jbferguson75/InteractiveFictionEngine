@@ -9,6 +9,7 @@ namespace InteractiveFictionEngine
 		public string InstructionText { get; set; } = string.Empty;
 		public string HelpText { get; set; } = string.Empty;
 		public string InfoText { get; set; } = string.Empty;	
+		public string UnknownCommandText {  get; set; } = string.Empty;
 		public Dictionary<int,IFRoom> Rooms { get; set; } = new Dictionary<int, IFRoom>();
 		public Dictionary<string, string> Aliases { get; set; } = new Dictionary<string, string>();
 		public int startRoomId = 0;
@@ -16,6 +17,12 @@ namespace InteractiveFictionEngine
 		{
 			InstructionText = "This is the sample content for the Interactive Fiction Game Engine.  This content is meant to test the abilities of the engine. ";
 			InstructionText += "Direct me with commands of 1 or 2 words.  (Should you get stuck, type \"help\" or \"info\" for some hints).";
+
+			UnknownCommandText = "Unknown Command.";
+
+			HelpText = "This is the help text.";
+
+			InfoText = "This is the info text.";
 
 			#region Create Rooms
 
