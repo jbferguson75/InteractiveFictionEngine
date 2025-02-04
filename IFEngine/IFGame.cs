@@ -18,7 +18,8 @@ namespace InteractiveFictionEngine
 			#region Set Content Text
 
 			InstructionText = "This is the sample content for the Interactive Fiction Game Engine.  This content is meant to test the abilities of the engine. ";
-			InstructionText += "Direct me with commands of 1 or 2 words.  (Should you get stuck, type \"help\" or \"info\" for some hints).";
+			InstructionText += "Direct me with commands.  Simple sentences are often best usually in this format:  <verb> <object>. ";
+			InstructionText += "(Should you get stuck, type \"help\" or \"info\" for some hints).";
 
 			UnknownCommandText = "Unknown Command.";
 
