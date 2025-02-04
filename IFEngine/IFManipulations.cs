@@ -24,6 +24,10 @@ namespace InteractiveFictionEngine
 		[Description("read")]
 		READ,
 		[Description("say")]
-		SAY
+		SAY,
+		[Description("act")]
+		ACT,
+		[Description("sit")]
+		SIT
 	}
 }

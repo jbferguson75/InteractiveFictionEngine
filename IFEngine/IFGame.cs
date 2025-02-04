@@ -15,6 +15,8 @@ namespace InteractiveFictionEngine
 		public int startRoomId = 0;
 		public void GenerateSampleContent()
 		{
+			#region Set Content Text
+
 			InstructionText = "This is the sample content for the Interactive Fiction Game Engine.  This content is meant to test the abilities of the engine. ";
 			InstructionText += "Direct me with commands of 1 or 2 words.  (Should you get stuck, type \"help\" or \"info\" for some hints).";
 
@@ -23,6 +25,8 @@ namespace InteractiveFictionEngine
 			HelpText = "This is the help text.";
 
 			InfoText = "This is the info text.";
+
+			#endregion
 
 			#region Create Rooms
 
@@ -36,7 +40,7 @@ namespace InteractiveFictionEngine
 
 			IFRoom livingRoom = new IFRoom() { RoomId = 3, Description = "Living Room\r\n\r\n" };
 			livingRoom.Description += "You are standing in a small living room.  Bookcases full of books lines the east wall.  There is a piano on the south wall ";
-			livingRoom.Description += "and two chairs sitting along the west wall.  There are 2 windows overlooking the front yard to the west. ";
+			livingRoom.Description += "and two chairs sitting along the west wall - first and second chairs.  There are 2 windows overlooking the front yard to the west. ";
 			livingRoom.Description += "This looks like a nice room to play music, read a book, or relax in the afternoon sun.";
 
 			IFRoom upstairsBase = new IFRoom() { RoomId = 4, Description = "Base of the Stairs\r\n\r\n" };
@@ -436,6 +440,74 @@ namespace InteractiveFictionEngine
 			diningRoom.Items.Add(smallPaperScrap);
 			diningroomcabinet.ContainedItemId = 8;
 
+			ActableItem piano = new()
+			{
+				itemId = 9,
+				name = "Piano",
+				description = "A pretty medium brown piano.",
+				ActText = "You play a jaunty tune on the piano.",
+				IsListed = false,
+				IsVisible = true,
+				IsGettable = false,
+				IsActionable = true
+			};
+
+			piano.tags.Add("piano");
+
+			livingRoom.Items.Add(piano);
+
+			ActableItem leftChair = new()
+			{
+				itemId = 10,
+				name = "Left Chair",
+				description = "A black and white chair just like the one to the right of it.",
+				ActText = "You sit on the chair.  It feels nice to take a rest.",
+				IsListed = false,
+				IsVisible = true,
+				IsGettable = false,
+				IsActionable = true
+			};
+
+			leftChair.tags.Add("first chair");
+			leftChair.tags.Add("1st chair");
+			leftChair.tags.Add("chair");
+
+			livingRoom.Items.Add(leftChair);
+
+			ActableItem rightChair = new()
+			{
+				itemId = 11,
+				name = "Right Chair",
+				description = "A black and white chair just like the one to the left of it.",
+				ActText = "You sit on the chair.  It's a bit bumpy but comfortable.",
+				IsListed = false,
+				IsVisible = true,
+				IsGettable = false,
+				IsActionable = true
+			};
+
+			leftChair.tags.Add("second chair");
+			leftChair.tags.Add("2nd chair");
+			rightChair.tags.Add("chair");
+
+			livingRoom.Items.Add(rightChair);
+
+			BasicItem windows = new()
+			{
+				itemId = 12,
+				name = "West Windows",
+				description = "There are two windows on the west well above the chairs.  You can see the front porch and yard from where you're looking.",
+				IsListed = false,
+				IsVisible = true,
+				IsGettable = false,
+				IsActionable = true
+			};
+
+			windows.tags.Add("window");
+			windows.tags.Add("windows");
+
+			livingRoom.Items.Add(windows);
+
 			#endregion
 
 			#region Add Rooms to Game
@@ -475,7 +547,6 @@ namespace InteractiveFictionEngine
 
 			#endregion
 
-
 			startRoomId = 1;
 		}
 
@@ -501,6 +572,9 @@ namespace InteractiveFictionEngine
 			Aliases.Add("retrieve", "get");
 			Aliases.Add("grab", "get");
 			Aliases.Add("swipe", "get");
+			Aliases.Add("play", "act");
+			Aliases.Add("lay", "act");
+			Aliases.Add("sit", "act");
 		}
 
 		public void LoadGame(string file_name)

@@ -1,4 +1,6 @@
 ﻿using Catalyst;
+using Catalyst.Models;
+using P = Catalyst.PatternUnitPrototype;
 using Mosaik.Core;
 using System.Text.Json;
 
@@ -19,7 +21,13 @@ namespace InteractiveFictionEngine
 
 			Storage.Current = new DiskStorage("catalyst-models");
 			nlp = Pipeline.For(Language.English);
-		}
+
+		//	var neuralizer = new Neuralyzer(Language.English, 0, "WikiNER-sample-fixes");
+
+		//	//neuralizer.TeachAddPattern("ADJ", "left", mp => mp.Add(new PatternUnit(P.Single().WithToken("left"))));
+
+		//	nlp.UseNeuralyzer(neuralizer);
+		//}
 
 		private void LoadOtherCommands()
 		{
@@ -161,7 +169,7 @@ namespace InteractiveFictionEngine
 					{
 						bool found = false;
 
-						while (i < parts.Count && (parts[i].POS == "ADJ" || parts[i].POS == "NOUN"))
+						while (i < parts.Count && (parts[i].POS == "ADJ" || parts[i].POS == "NOUN" || parts[i].POS == "ADV"))
 						{
 							command.objectString += parts[i].word + " ";
 							i++;
