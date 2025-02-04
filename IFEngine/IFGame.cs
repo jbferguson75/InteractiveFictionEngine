@@ -102,7 +102,8 @@ namespace InteractiveFictionEngine
 			masterCloset.Description += "in storage.";
 
 			IFRoom downstairBase = new IFRoom() { RoomId = 21, Description = "Bottom of Basement Stairs\r\n\r\n" };
-			downstairBase.Description += "This is the bottom of the basement stairs.  There is a room to the west and an opening to a large room to the east.";
+			downstairBase.Description += "This is the bottom of the basement stairs.  There is an opening to a large room to the east. You can hear the whiring ";
+			downstairBase.Description += "of machinery to your west.";
 
 			IFRoom downstairFamilyRoom = new IFRoom() { RoomId = 22, Description = "Basement Family Room\r\n\r\n" };
 			downstairFamilyRoom.Description += "This is a huge room.  There is a pool table closest to you and a high table with 8 chairs in the middle.  On the ";
@@ -243,7 +244,7 @@ namespace InteractiveFictionEngine
 
 			//Connect exits for downstairBase
 
-			downstairBase.Exits.Add(new IFExit() { direction = IFDirection.West, roomId = mechanicalRoom.RoomId });
+			downstairBase.Exits.Add(new IFExit() { direction = IFDirection.West, roomId = mechanicalRoom.RoomId, isVisible = false });
 			downstairBase.Exits.Add(new IFExit() { direction = IFDirection.East, roomId = downstairFamilyRoom.RoomId });
 			downstairBase.Exits.Add(new IFExit() { direction = IFDirection.Up, roomId = familyRoom.RoomId });
 
@@ -311,7 +312,7 @@ namespace InteractiveFictionEngine
 
 			driveway.Items.Add(houseKey);
 
-			Door frontDoor = new Door()
+			LockDoor frontDoor = new LockDoor()
 			{
 				itemId = 2,
 				name = "Front Door",

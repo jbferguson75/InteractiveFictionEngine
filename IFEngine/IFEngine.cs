@@ -38,13 +38,11 @@ namespace InteractiveFictionEngine
 				if (room.Exits.Count > 0) { Console.WriteLine(); }
 				string exitString = "Obvious Exits: ";
 
-				for (int i=0; i<room.Exits.Count; i++)
+				foreach (var exit in room.Exits.FindAll(o => o.isVisible))
 				{
-					var exit = room.Exits[i];
-					exitString += exit.direction.ToString();
-					if (i != room.Exits.Count - 1)
-						exitString += ", ";
+					exitString += exit.direction.ToString() + ", ";
 				}
+				exitString = exitString.Substring(0, exitString.Length - 2);
 				Utilities.EpicWriteLine(exitString, ConsoleColor.Magenta);
 
 				userString = Console.ReadLine();
@@ -150,6 +148,11 @@ namespace InteractiveFictionEngine
 				{
 					Console.WriteLine();
 					Utilities.EpicWriteLine("The door seems to be locked.");
+				}
+				else if (!roomExits[0].isVisible)
+				{
+					Console.WriteLine();
+					Utilities.EpicWriteLine("You can't seem to go that way.");
 				}
 				else
 				{

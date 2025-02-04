@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace InteractiveFictionEngine.Items
 {
-	internal class Door : IFItem
+	internal class LockDoor : IFItem
 	{
 		public IFExit exit { get; set; }
 		public int keyid { get; set; }
-		public Door() 
+		public LockDoor() 
 		{
 			tags.Add("door");
 		}
