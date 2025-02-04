@@ -9,6 +9,7 @@ namespace InteractiveFictionEngine.Items
 	internal class ContainerItem : IFItem
 	{
 		public int ContainedItemId { get; set; } = -1;
+		public string SearchText { get; set; } = string.Empty;
 
 		public ContainerItem() 
 		{
@@ -17,7 +18,7 @@ namespace InteractiveFictionEngine.Items
 			tags.Add("shelf");
 			tags.Add("shelves");
 		}
-		public override void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room, string word = "")
+		public override void DoAction(IFManipulations manipulation, IFCharacter character, IFRoom room, string word = "")
 		{
 			switch (manipulation)
 			{
@@ -46,7 +47,15 @@ namespace InteractiveFictionEngine.Items
 				return;
 			}
 
-			Utilities.EpicWriteLine("You search the " + name + " until you find a " + item.name);
+			if (SearchText == string.Empty)
+			{
+				Utilities.EpicWriteLine("You search the " + name + " until you find a " + item.name);
+			}
+			else
+			{
+				Utilities.EpicWriteLine(SearchText);
+			}
+
 			item.IsVisible = true;
 			item.IsListed = true;
 			item.IsGettable = true;

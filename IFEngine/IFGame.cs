@@ -5,6 +5,7 @@ namespace InteractiveFictionEngine
 {
 	public class IFGame
 	{
+		public IFCharacter Character { get; set; } = new IFCharacter();
 		public string InstructionText { get; set; } = string.Empty;
 		public string HelpText { get; set; } = string.Empty;
 		public string InfoText { get; set; } = string.Empty;	
@@ -365,6 +366,7 @@ namespace InteractiveFictionEngine
 				itemId = 5,
 				name = "Mechanical Room Door",
 				description = "A normal interior door.  There is a magical feeling with respect to it.",
+				ExitOpenText = "There is a quick flashing on the west wall.  The flashing increases in speed until it's so fast that you see a door appear on the wall.  You now see an exit to the West.",
 				exit = downstairBase.Exits.FindAll(o => o.direction == IFDirection.West).FirstOrDefault(),
 				IsListed = false,
 				IsVisible = false,
@@ -375,6 +377,57 @@ namespace InteractiveFictionEngine
 			mechanicalRoomDoor.tags.Add("pbxrx");
 
 			downstairBase.Items.Add(mechanicalRoomDoor);
+
+			SayTransport coldRoomTransportation = new SayTransport()
+			{
+				itemId = 6,
+				name = "Cold Room Transportation",
+				TransportationText = "You start to feel funny - like getting squeezed into a ball.  The room around you starts looking larger and larger (or are you just getting smaller). Soon you feel like you've completely collapsed in upon your self.",
+				IsListed = false,
+				IsVisible = false,
+				IsGettable = false,
+				TranportToRoomId = 6,
+				word = "lrxze"
+			};
+
+			coldRoomTransportation.tags.Add("lrxze");
+
+			coldRoom.Items.Add(coldRoomTransportation);
+
+			ContainerItem diningroomcabinet = new ContainerItem()
+			{
+				itemId = 7,
+				name = "Dining Room Cabinet",
+				description = "You see cabinets above the desk on the west wall.  They look like the same size and style as the cupboards in the kitchen.  They seemed to be filled with office supplies.",
+				SearchText = "You search through all of the office supplies.  Between two boxes full of pens and pencils you see a small scrap of paper."
+			};
+
+			diningroomcabinet.tags.Add("cupboard");
+			diningroomcabinet.tags.Add("cupboards");
+			diningroomcabinet.tags.Add("cabinet");
+			diningroomcabinet.tags.Add("cabinets");
+
+			diningRoom.Items.Add(diningroomcabinet);
+
+			ReadingItem smallPaperScrap = new ReadingItem()
+			{
+				itemId = 8,
+				name = "Small Scrap of Paper",
+				description = "It's a small scrap of paper more like a partial scrap.  It looks like it's been burned on the edges.",
+				IsListed = false,
+				IsVisible = false,
+				readingContent = "To get there, say 'lrxze'",
+				IsGettable = false,
+				IsActionable = true
+			};
+
+			smallPaperScrap.tags.Add("paper");
+			smallPaperScrap.tags.Add("paper scrap");
+			smallPaperScrap.tags.Add("scrap of paper");
+			smallPaperScrap.tags.Add("burned paper");
+
+			diningRoom.Items.Add(smallPaperScrap);
+			diningroomcabinet.ContainedItemId = 8;
 
 			#endregion
 
@@ -436,6 +489,11 @@ namespace InteractiveFictionEngine
 			Aliases.Add("i", "inventory");
 			Aliases.Add("ex", "examine");
 			Aliases.Add("look", "examine");
+			Aliases.Add("r", "read");
+			Aliases.Add("l", "examine");
+			Aliases.Add("retrieve", "get");
+			Aliases.Add("grab", "get");
+			Aliases.Add("swipe", "get");
 		}
 
 		public void LoadGame(string file_name)

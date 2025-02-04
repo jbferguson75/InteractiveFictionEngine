@@ -3,45 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static InteractiveFictionEngine.IFParser;
 
 namespace InteractiveFictionEngine.Items
 {
-	internal class SayDoor : IFItem
+	internal class SayTransport : IFItem
 	{
-		public IFExit? exit { get; set; }
+		public int TranportToRoomId { get; set; } = -1;
 		public string word { get; set; } = string.Empty;
-		public string ExitOpenText { get; set; } = string.Empty;
-		public SayDoor() 
-		{
-			IsVisible = false;
-			IsListed = false;
-		}
+		public string TransportationText { get; set; } = string.Empty;
+
 		public override void DoAction(IFManipulations manipulation, IFCharacter character, IFRoom room, string word = "")
 		{
 			if (manipulation == IFManipulations.SAY)
 			{
-				DoSay(word);
+				DoSay(word, character);
 			}
 		}
 
-		internal override void DoSay(string w, IFCharacter? character = null)
+		internal override void DoSay(string w, IFCharacter? character)
 		{
-			if (exit == null)
+			if (TranportToRoomId == -1 || character == null)
 			{
 				return;
 			}
 
 			if (word.ToLower().Equals(w.ToLower()))
 			{
-				if (exit.isVisible)
-				{
-					Utilities.EpicWriteLine("You've already said that here.");
-				}
-				else
-				{
-					exit.isVisible = true;
-					Utilities.EpicWriteLine(ExitOpenText);
-				}
+				Utilities.EpicWriteLine(TransportationText);
+				character.currentLocation = TranportToRoomId;
 			}
 			else
 			{

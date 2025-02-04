@@ -18,7 +18,7 @@ namespace InteractiveFictionEngine
 
 		public List<string> tags { get; set; } = new List<string>();
 
-		public abstract void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room, string word="");
+		public abstract void DoAction(IFManipulations manipulation, IFCharacter character, IFRoom room, string word="");
 
 		internal virtual void DoSearch(IFCharacter character, IFRoom room)
 		{
@@ -51,7 +51,7 @@ namespace InteractiveFictionEngine
 			}
 		}
 
-		internal virtual void DoSay(string w)
+		internal virtual void DoSay(string w, IFCharacter? character = null)
 		{
 			Utilities.EpicWriteLine("Nothing happens.");
 		}

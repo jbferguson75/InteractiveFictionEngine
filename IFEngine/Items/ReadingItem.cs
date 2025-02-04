@@ -10,7 +10,7 @@ namespace InteractiveFictionEngine.Items
 	{
 		public string readingContent {  get; set; } = string.Empty;
 
-		public override void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room, string word="")
+		public override void DoAction(IFManipulations manipulation, IFCharacter character, IFRoom room, string word="")
 		{
 			switch (manipulation)
 			{

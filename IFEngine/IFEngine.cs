@@ -9,13 +9,14 @@ namespace InteractiveFictionEngine
 	public class IFEngine
 	{
 		IFGame game = new IFGame();
-		IFCharacter character = new IFCharacter();
-		IFParser parser = new IFParser();
+		IFCharacter? character;
+		readonly IFParser parser = new();
 
 		public void Start()
 		{
 			game.GenerateSampleContent();
 			game.GenerateAliasList();
+			character = game.Character;
 			character.currentLocation = game.startRoomId;
 			string? userString = string.Empty;
 			IFCommand command = new IFCommand();
@@ -29,21 +30,9 @@ namespace InteractiveFictionEngine
 				Console.WriteLine();
 				Utilities.EpicWriteLine(room.Description, ConsoleColor.Cyan);
 				
-				if (room.Items.Count > 0) { Console.WriteLine(); }
-				foreach(IFItem item in room.Items.FindAll(o => o.IsListed))
-				{
-					Utilities.EpicWriteLine(item.name, ConsoleColor.Yellow);
-				}
+				DisplayItems(room);
 
-				if (room.Exits.Count > 0) { Console.WriteLine(); }
-				string exitString = "Obvious Exits: ";
-
-				foreach (var exit in room.Exits.FindAll(o => o.isVisible))
-				{
-					exitString += exit.direction.ToString() + ", ";
-				}
-				exitString = exitString.Substring(0, exitString.Length - 2);
-				Utilities.EpicWriteLine(exitString, ConsoleColor.Magenta);
+				DisplayExits(room);
 
 				userString = Console.ReadLine();
 
@@ -78,6 +67,28 @@ namespace InteractiveFictionEngine
 			}
 		}
 
+		private void DisplayItems(IFRoom room)
+		{
+			if (room.Items.Count > 0) { Console.WriteLine(); }
+			foreach (IFItem item in room.Items.FindAll(o => o.IsListed))
+			{
+				Utilities.EpicWriteLine(item.name, ConsoleColor.Yellow);
+			}
+		}
+
+		private void DisplayExits(IFRoom room)
+		{
+			if (room.Exits.Count > 0) { Console.WriteLine(); }
+			string exitString = "Obvious Exits: ";
+
+			foreach (var exit in room.Exits.FindAll(o => o.isVisible))
+			{
+				exitString += exit.direction.ToString() + ", ";
+			}
+			exitString = exitString.Substring(0, exitString.Length - 2);
+			Utilities.EpicWriteLine(exitString, ConsoleColor.Magenta);
+		}
+
 		private string? ReplaceWithAliases(string? userString)
 		{
 			if (userString == null)
@@ -85,13 +96,20 @@ namespace InteractiveFictionEngine
 
 			var wordList = userString.Split(' ');
 
-			foreach (var word in wordList)
+			for (int i=0; i < wordList.Count(); i++)
 			{
-				if (game.Aliases.ContainsKey(word))
+				if (game.Aliases.ContainsKey(wordList[i]))
 				{
-					userString = userString.Replace(word, game.Aliases[word]);
+					wordList[i] = game.Aliases[wordList[i]];
 				}
 			}
+
+			userString = string.Empty;
+			foreach (var word in wordList)
+			{
+				userString += word + " ";
+			}
+			userString = userString.Trim();
 
 			return userString;
 		}
@@ -99,7 +117,7 @@ namespace InteractiveFictionEngine
 		private void ExecuteInventory()
 		{
 			Console.WriteLine();
-			if (character.inventory.Count == 0)
+			if (character == null || character.inventory.Count == 0)
 			{
 				Utilities.EpicWriteLine("You have nothing in your pockets.");
 				return;
@@ -115,6 +133,8 @@ namespace InteractiveFictionEngine
 
 		private void ExecuteManipulation(IFCommand command)
 		{
+			if (character == null)
+				return;
 			//Let's build an inventory of all the available items in the room and character inventory that match the command object
 
 			List<IFItem> items = game.Rooms[character.currentLocation].Items.FindAll(o => o.tags.Contains(command.objectString) && o.IsActionable);
@@ -123,7 +143,7 @@ namespace InteractiveFictionEngine
 			if (items.Count == 1)
 			{
 				Console.WriteLine();
-				items[0].DoAction(Enum.Parse<IFManipulations>(command.commandString.ToUpper()), ref character, game.Rooms[character.currentLocation], command.wordString);
+				items[0].DoAction(Enum.Parse<IFManipulations>(command.commandString.ToUpper()), character, game.Rooms[character.currentLocation], command.wordString);
 			}
 			else if (items.Count > 1) 
 			{
@@ -145,6 +165,9 @@ namespace InteractiveFictionEngine
 
 		private void ExecuteMovement(IFCommand command)
 		{
+			if (character == null)
+				return;
+
 			List<IFExit> roomExits = game.Rooms[character.currentLocation].Exits.FindAll(o => o.direction != null && o.direction.Value.ToString() == command.commandString);
 			
 			if (roomExits.Count > 0)
