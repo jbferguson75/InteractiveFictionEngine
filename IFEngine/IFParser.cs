@@ -68,6 +68,21 @@ namespace InteractiveFictionEngine
 
 				command = FindCommand(parts);
 
+				if (command.commandString.ToLower() == "say")
+				{
+					int firstPos = commandStr.IndexOf('"', 0);
+					int lastPos = commandStr.IndexOf("\"", firstPos + 1);
+
+					if (firstPos != -1)
+					{
+						command.wordString = commandStr.Substring(firstPos + 1, lastPos - firstPos - 1);
+					}
+					else if (command.objectString != string.Empty)
+					{
+						command.wordString = command.objectString;
+					}
+				}
+
 				if (command != null && command.commandType != IFCommandType.Unknown)
 				{
 					return true;
@@ -156,6 +171,7 @@ namespace InteractiveFictionEngine
 							break;
 						}
 					}
+
 					if (command.commandString != string.Empty)
 						return command;
 				}

@@ -14,10 +14,11 @@ namespace InteractiveFictionEngine
 		public bool IsVisible { get; set; } = true;
 		public bool IsListed { get; set; } = false;
 		public bool IsGettable { get; set; } = false;
+		public bool IsActionable { get; set; } = true;
 
 		public List<string> tags { get; set; } = new List<string>();
 
-		public abstract void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room);
+		public abstract void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room, string word="");
 
 		internal virtual void DoSearch(IFCharacter character, IFRoom room)
 		{
@@ -48,6 +49,11 @@ namespace InteractiveFictionEngine
 			{
 				Utilities.EpicWriteLine("You can't seem to do that.");
 			}
+		}
+
+		internal virtual void DoSay(string w)
+		{
+			Utilities.EpicWriteLine("Nothing happens.");
 		}
 
 		internal virtual void DoOther()

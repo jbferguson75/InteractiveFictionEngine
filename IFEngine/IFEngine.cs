@@ -109,7 +109,7 @@ namespace InteractiveFictionEngine
 
 			foreach(var item in character.inventory)
 			{
-				Utilities.EpicWriteLine(item.name);
+				Utilities.EpicWriteLine(item.name, ConsoleColor.Yellow);
 			}
 		}
 
@@ -117,18 +117,23 @@ namespace InteractiveFictionEngine
 		{
 			//Let's build an inventory of all the available items in the room and character inventory that match the command object
 
-			List<IFItem> items = game.Rooms[character.currentLocation].Items.FindAll(o => o.tags.Contains(command.objectString) && o.IsVisible);
+			List<IFItem> items = game.Rooms[character.currentLocation].Items.FindAll(o => o.tags.Contains(command.objectString) && o.IsActionable);
 			items.AddRange(character.inventory.FindAll(o => o.tags.Contains(command.objectString) && o.IsVisible));
 
 			if (items.Count == 1)
 			{
 				Console.WriteLine();
-				items[0].DoAction(Enum.Parse<IFManipulations>(command.commandString.ToUpper()), ref character, game.Rooms[character.currentLocation]);
+				items[0].DoAction(Enum.Parse<IFManipulations>(command.commandString.ToUpper()), ref character, game.Rooms[character.currentLocation], command.wordString);
 			}
 			else if (items.Count > 1) 
 			{
 				Console.WriteLine();
 				Utilities.EpicWriteLine("Which " + command.objectString + " do you mean?");
+			}
+			else if (command.wordString != string.Empty)
+			{
+				Console.WriteLine();
+				Utilities.EpicWriteLine("You say \"" + command.wordString + "\"");
 			}
 			else
 			{

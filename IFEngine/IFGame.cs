@@ -1,4 +1,5 @@
 ﻿using InteractiveFictionEngine.Items;
+using Microsoft.Recognizers.Definitions;
 
 namespace InteractiveFictionEngine
 {
@@ -349,7 +350,8 @@ namespace InteractiveFictionEngine
 				IsListed = false,
 				IsVisible = false,
 				readingContent = "To open, say 'pbxrx'",
-				IsGettable = true
+				IsGettable = false,
+				IsActionable = true
 			};
 
 			blueBook.tags.Add("book");
@@ -357,6 +359,22 @@ namespace InteractiveFictionEngine
 
 			livingRoom.Items.Add(blueBook);
 			bookshelves.ContainedItemId = 4;
+
+			SayDoor mechanicalRoomDoor = new SayDoor()
+			{
+				itemId = 5,
+				name = "Mechanical Room Door",
+				description = "A normal interior door.  There is a magical feeling with respect to it.",
+				exit = downstairBase.Exits.FindAll(o => o.direction == IFDirection.West).FirstOrDefault(),
+				IsListed = false,
+				IsVisible = false,
+				IsGettable = false,
+				word = "pbxrx"
+			};
+
+			mechanicalRoomDoor.tags.Add("pbxrx");
+
+			downstairBase.Items.Add(mechanicalRoomDoor);
 
 			#endregion
 

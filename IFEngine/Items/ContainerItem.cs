@@ -17,7 +17,7 @@ namespace InteractiveFictionEngine.Items
 			tags.Add("shelf");
 			tags.Add("shelves");
 		}
-		public override void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room)
+		public override void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room, string word = "")
 		{
 			switch (manipulation)
 			{
@@ -26,6 +26,9 @@ namespace InteractiveFictionEngine.Items
 					break;
 				case IFManipulations.SEARCH:
 					DoSearch(character, room);
+					break;
+				case IFManipulations.SAY:
+					DoSay(word);
 					break;
 				default:
 					DoOther();
@@ -46,6 +49,8 @@ namespace InteractiveFictionEngine.Items
 			Utilities.EpicWriteLine("You search the " + name + " until you find a " + item.name);
 			item.IsVisible = true;
 			item.IsListed = true;
+			item.IsGettable = true;
+			item.IsActionable = true;
 		}
 	}
 }

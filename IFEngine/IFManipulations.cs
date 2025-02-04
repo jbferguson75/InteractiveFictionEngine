@@ -22,6 +22,8 @@ namespace InteractiveFictionEngine
 		[Description("drop")]
 		DROP,
 		[Description("read")]
-		READ
+		READ,
+		[Description("say")]
+		SAY
 	}
 }

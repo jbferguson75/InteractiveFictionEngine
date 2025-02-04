@@ -15,7 +15,7 @@ namespace InteractiveFictionEngine.Items
 		{
 			tags.Add("door");
 		}
-		public override void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room)
+		public override void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room, string word = "")
 		{
 			switch (manipulation)
 			{
@@ -30,6 +30,9 @@ namespace InteractiveFictionEngine.Items
 					break;
 				case IFManipulations.LOCK:
 					DoLock(character);
+					break;
+				case IFManipulations.SAY:
+					DoSay(word);
 					break;
 				default:
 					DoOther();

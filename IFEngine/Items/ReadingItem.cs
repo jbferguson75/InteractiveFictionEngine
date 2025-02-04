@@ -10,7 +10,7 @@ namespace InteractiveFictionEngine.Items
 	{
 		public string readingContent {  get; set; }
 
-		public override void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room)
+		public override void DoAction(IFManipulations manipulation, ref IFCharacter character, IFRoom room, string word="")
 		{
 			switch (manipulation)
 			{
@@ -25,6 +25,9 @@ namespace InteractiveFictionEngine.Items
 					break;
 				case IFManipulations.GET:
 					DoGet(character, room);
+					break;
+				case IFManipulations.SAY:
+					DoSay(word);
 					break;
 				default:
 					DoOther();
