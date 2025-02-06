@@ -137,8 +137,8 @@ namespace InteractiveFictionEngine
 				return;
 			//Let's build an inventory of all the available items in the room and character inventory that match the command object
 
-			List<IFItem> items = game.Rooms[character.currentLocation].Items.FindAll(o => o.tags.Contains(command.objectString) && o.IsActionable);
-			items.AddRange(character.inventory.FindAll(o => o.tags.Contains(command.objectString) && o.IsVisible));
+			List<IFItem> items = game.Rooms[character.currentLocation].Items.FindAll(o => o.tags.Contains(command.directObject) && o.IsActionable);
+			items.AddRange(character.inventory.FindAll(o => o.tags.Contains(command.directObject) && o.IsVisible));
 
 			if (items.Count == 1)
 			{
@@ -148,7 +148,7 @@ namespace InteractiveFictionEngine
 			else if (items.Count > 1) 
 			{
 				Console.WriteLine();
-				Utilities.EpicWriteLine("Which " + command.objectString + " do you mean?");
+				Utilities.EpicWriteLine("Which " + command.directObject + " do you mean?");
 			}
 			else if (command.wordString != string.Empty)
 			{
@@ -158,7 +158,7 @@ namespace InteractiveFictionEngine
 			else
 			{
 				Console.WriteLine();
-				Utilities.EpicWriteLine("You find no " + command.objectString + " here.");
+				Utilities.EpicWriteLine("You find no " + command.directObject + " here.");
 			}
 
 		}

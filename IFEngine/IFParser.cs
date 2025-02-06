@@ -21,13 +21,7 @@ namespace InteractiveFictionEngine
 
 			Storage.Current = new DiskStorage("catalyst-models");
 			nlp = Pipeline.For(Language.English);
-
-		//	var neuralizer = new Neuralyzer(Language.English, 0, "WikiNER-sample-fixes");
-
-		//	//neuralizer.TeachAddPattern("ADJ", "left", mp => mp.Add(new PatternUnit(P.Single().WithToken("left"))));
-
-		//	nlp.UseNeuralyzer(neuralizer);
-		//}
+		}
 
 		private void LoadOtherCommands()
 		{
@@ -85,9 +79,9 @@ namespace InteractiveFictionEngine
 					{
 						command.wordString = commandStr.Substring(firstPos + 1, lastPos - firstPos - 1);
 					}
-					else if (command.objectString != string.Empty)
+					else if (command.directObject != string.Empty)
 					{
-						command.wordString = command.objectString;
+						command.wordString = command.directObject;
 					}
 				}
 
@@ -126,66 +120,89 @@ namespace InteractiveFictionEngine
 			return result;
 		}
 
+		private enum SearchPart
+		{
+			Verb,
+			DirectObject,
+			Preposition,
+			PrepositionObject,
+			Complete
+		}
+
 		private IFCommand FindCommand(List<SentenceParts> parts)
 		{
-			IFCommand command;
+			IFCommand command = new IFCommand();
+			SearchPart currentSearchPart = SearchPart.Verb;
+			bool complete = false;
+
+			if (parts.Count == 0)
+			{
+				return new IFCommand() { commandType = IFCommandType.Unknown };
+			}
+
+			int i = 0;
 
 			if (parts.Count == 1)
 			{
-				var command_list = commands.FindAll(o => parts[0].word.Equals(o.commandString.ToLower()));
-				if (command_list.Count == 1)
-					return command_list[0];
+				command.commandString = parts[0].word;
+				i = parts.Count - 1;
 			}
-			else if (parts.Count > 1)
+			else if (parts.FindAll(o => o.POS == "VERB").Count == 0)
 			{
-				string verb = string.Empty;
+				command.commandString = parts[0].word;
+				i = 1;
+			}
 
-				int i = 0;
+			for (; i < parts.Count; i++)
+			{
+				var word = parts[i];
 
-				foreach (var word in parts)
+				if (word.POS == "VERB" && currentSearchPart == SearchPart.Verb)
 				{
-					i++;
-					if (word.POS == "VERB")
-					{
-						verb = word.word;
-						break;
-					}
+					command.commandString = word.word;
+					continue;
 				}
 
-				if (verb ==  string.Empty)
+				if ((currentSearchPart == SearchPart.Verb || currentSearchPart == SearchPart.DirectObject) && (word.POS == "ADJ" || word.POS == "NOUN"))
 				{
-					verb = parts[0].word;
-					i = 1;
+					currentSearchPart = SearchPart.DirectObject;
+					command.directObject += word.word + " ";
+					continue;
 				}
 
-				var command_list = commands.FindAll(o => verb.Equals(o.commandString.ToLower()));
-
-				if (command_list.Count == 1)
+				if (currentSearchPart == SearchPart.DirectObject && word.POS != "ADJ" && word.POS != "NOUN")
 				{
-					command = new IFCommand(command_list[0]);
-					
-
-					for (; i < parts.Count; i++)
-					{
-						bool found = false;
-
-						while (i < parts.Count && (parts[i].POS == "ADJ" || parts[i].POS == "NOUN" || parts[i].POS == "ADV"))
-						{
-							command.objectString += parts[i].word + " ";
-							i++;
-							found = true;
-						}
-
-						if (found)
-						{
-							command.objectString = command.objectString.Substring(0, command.objectString.Length - 1);
-							break;
-						}
-					}
-
-					if (command.commandString != string.Empty)
-						return command;
+					currentSearchPart = SearchPart.Preposition;
 				}
+
+				if (currentSearchPart == SearchPart.Preposition && word.POS == "ADP")
+				{
+					command.preposition = word.word;
+					continue;
+				}
+
+				if ((currentSearchPart == SearchPart.Preposition || currentSearchPart == SearchPart.PrepositionObject) && (word.POS == "ADJ" || word.POS == "NOUN"))
+				{
+					currentSearchPart = SearchPart.PrepositionObject;
+					command.directObject += word.word + " ";
+					continue;
+				}
+
+				if (currentSearchPart == SearchPart.PrepositionObject && word.POS != "ADJ" && word.POS != "NOUN")
+				{
+					currentSearchPart = SearchPart.Complete;
+				}
+			}
+
+			command.directObject = command.directObject.Trim();
+			command.prepObject = command.prepObject.Trim();
+
+			var command_list = commands.FindAll(o => command.commandString.Equals(o.commandString.ToLower()));
+
+			if (command_list.Count > 0)
+			{
+				command.commandType = command_list[0].commandType;
+				return command;
 			}
 
 			return new IFCommand() { commandType = IFCommandType.Unknown };
