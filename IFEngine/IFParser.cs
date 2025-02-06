@@ -133,7 +133,6 @@ namespace InteractiveFictionEngine
 		{
 			IFCommand command = new IFCommand();
 			SearchPart currentSearchPart = SearchPart.Verb;
-			bool complete = false;
 
 			if (parts.Count == 0)
 			{
@@ -145,7 +144,7 @@ namespace InteractiveFictionEngine
 			if (parts.Count == 1)
 			{
 				command.commandString = parts[0].word;
-				i = parts.Count - 1;
+				i = parts.Count;
 			}
 			else if (parts.FindAll(o => o.POS == "VERB").Count == 0)
 			{

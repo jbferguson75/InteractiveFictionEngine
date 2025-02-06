@@ -8,7 +8,7 @@ namespace InteractiveFictionEngine.Items
 {
 	internal class ContainerItem : IFItem
 	{
-		public int ContainedItemId { get; set; } = -1;
+		public List<IFItem> ContainedItems { get; set; } = new List<IFItem>();
 		public string SearchText { get; set; } = string.Empty;
 
 		public ContainerItem() 
@@ -39,13 +39,15 @@ namespace InteractiveFictionEngine.Items
 
 		internal override void DoSearch(IFCharacter character, IFRoom room)
 		{
-			IFItem? item = room.Items.Find(o => o.itemId == ContainedItemId);
-
-			if (item == null || ContainedItemId == -1)
+			if (ContainedItems.Count == 0)
 			{
 				base.DoSearch(character, room);
 				return;
 			}
+
+			IFItem item = ContainedItems[0];
+			room.Items.Add(item);
+			ContainedItems.Remove(item);
 
 			if (SearchText == string.Empty)
 			{
@@ -57,9 +59,6 @@ namespace InteractiveFictionEngine.Items
 			}
 
 			item.IsVisible = true;
-			item.IsListed = true;
-			item.IsGettable = true;
-			item.IsActionable = true;
 		}
 	}
 }

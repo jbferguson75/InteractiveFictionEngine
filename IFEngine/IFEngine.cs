@@ -168,7 +168,7 @@ namespace InteractiveFictionEngine
 			if (character == null)
 				return;
 
-			List<IFExit> roomExits = game.Rooms[character.currentLocation].Exits.FindAll(o => o.direction != null && o.direction.Value.ToString() == command.commandString);
+			List<IFExit> roomExits = game.Rooms[character.currentLocation].Exits.FindAll(o => o.direction != null && o.direction.Value.ToString().ToLower() == command.commandString.ToLower());
 			
 			if (roomExits.Count > 0)
 			{

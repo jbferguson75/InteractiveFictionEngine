@@ -360,18 +360,17 @@ namespace InteractiveFictionEngine
 				itemId = 4,
 				name = "blue book",
 				description = "It's what looks like a very old and dusty book.  It looks like it's been around for centuries.",
-				IsListed = false,
-				IsVisible = false,
+				IsListed = true,
+				IsVisible = true,
 				readingContent = "To open, say 'pbxrx'",
-				IsGettable = false,
+				IsGettable = true,
 				IsActionable = true
 			};
 
 			blueBook.tags.Add("book");
 			blueBook.tags.Add("blue book");
 
-			livingRoom.Items.Add(blueBook);
-			bookshelves.ContainedItemId = 4;
+			bookshelves.ContainedItems.Add(blueBook);
 
 			SayDoor mechanicalRoomDoor = new()
 			{
@@ -426,10 +425,10 @@ namespace InteractiveFictionEngine
 				itemId = 8,
 				name = "Small Scrap of Paper",
 				description = "It's a small scrap of paper more like a partial scrap.  It looks like it's been burned on the edges.",
-				IsListed = false,
-				IsVisible = false,
+				IsListed = true,
+				IsVisible = true,
 				readingContent = "To get there, say 'lrxze'",
-				IsGettable = false,
+				IsGettable = true,
 				IsActionable = true
 			};
 
@@ -438,8 +437,7 @@ namespace InteractiveFictionEngine
 			smallPaperScrap.tags.Add("scrap of paper");
 			smallPaperScrap.tags.Add("burned paper");
 
-			diningRoom.Items.Add(smallPaperScrap);
-			diningroomcabinet.ContainedItemId = 8;
+			diningroomcabinet.ContainedItems.Add(smallPaperScrap);
 
 			ActableItem piano = new()
 			{
