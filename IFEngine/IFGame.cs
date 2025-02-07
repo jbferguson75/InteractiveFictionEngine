@@ -33,7 +33,7 @@ namespace InteractiveFictionEngine
 
 			IFRoom driveway = new() { RoomId = 1, Description = "Driveway\r\n\r\n" };
 			driveway.Description += "You are standing in the driveway of a regular blue and red brick house which stands to the east.  ";
-			driveway.Description += "Around you is a typical suburban neighborhood at about the middle of a cul-de-sac.  ";
+			driveway.Description += "Around you is a typical suburban neighborhood at about the middle of a cul-de-sac.  There is a tree in the front yard.";
 
 			IFRoom entry = new() { RoomId = 2, Description = "House Entry\r\n\r\n" };
 			entry.Description += "You are inside a regular blue and red brick house. You are standing in a small entry room.  ";
@@ -156,6 +156,13 @@ namespace InteractiveFictionEngine
 			IFRoom coldRoom = new() { RoomId = 30, Description = "Cold Room\r\n\r\n" };
 			coldRoom.Description += "This is a small room that sits under the front porch.  All of the walls are cement and the temperature is noticeably colder here. ";
 			coldRoom.Description += "On one wall there are shelves with various long-term food and supply storage along with various suitcases and other storage items.";
+
+			IFRoom treeTop = new()
+			{
+				RoomId = 31,
+				Description = "Tree Top\r\n\r\n" +
+				"You're in the top of the tree.  It feels like you can see over the whole neighborhood - from one end of the cul-de-sac to the other."
+			};
 
 			#endregion
 
@@ -307,6 +314,9 @@ namespace InteractiveFictionEngine
 
 			coldRoom.Exits.Add(new IFExit() { direction = IFDirection.East, roomId = mechanicalRoom.RoomId });
 
+			//Connect Tree Top
+			treeTop.Exits.Add(new IFExit() { direction = IFDirection.Down, roomId = driveway.RoomId });
+
 			#endregion
 
 			#region Create Items
@@ -320,9 +330,7 @@ namespace InteractiveFictionEngine
 				IsGettable = true
 			};
 
-			houseKey.tags.Add("silver key");
-			houseKey.tags.Add("small key");
-			houseKey.tags.Add("small silver key");
+			houseKey.tags.AddRange(new[] { "key", "silver key", "small key", "small silver key" });
 
 			driveway.Items.Add(houseKey);
 
@@ -335,9 +343,7 @@ namespace InteractiveFictionEngine
 				keyid = 1
 			};
 
-			frontDoor.tags.Add("front door");
-			frontDoor.tags.Add("yellow door");
-			frontDoor.tags.Add("east door");
+			frontDoor.tags.AddRange(new[] { "front door", "yellow door", "east door" });
 
 			driveway.Items.Add(frontDoor);
 
@@ -348,10 +354,7 @@ namespace InteractiveFictionEngine
 				description = "You see 3 bookshelves lining the west wall.  They have glass doors and are full of books of very genre."
 			};
 
-			bookshelves.tags.Add("bookshelf");
-			bookshelves.tags.Add("bookshelves");
-			bookshelves.tags.Add("shelf");
-			bookshelves.tags.Add("shelves");
+			bookshelves.tags.AddRange(new[] { "bookshelf", "bookshelves", "shelf", "shelves" });
 
 			livingRoom.Items.Add(bookshelves);
 
@@ -367,8 +370,7 @@ namespace InteractiveFictionEngine
 				IsActionable = true
 			};
 
-			blueBook.tags.Add("book");
-			blueBook.tags.Add("blue book");
+			blueBook.tags.AddRange(new[] { "book", "blue book" });
 
 			bookshelves.ContainedItems.Add(blueBook);
 
@@ -413,10 +415,7 @@ namespace InteractiveFictionEngine
 				SearchText = "You search through all of the office supplies.  Between two boxes full of pens and pencils you see a small scrap of paper."
 			};
 
-			diningroomcabinet.tags.Add("cupboard");
-			diningroomcabinet.tags.Add("cupboards");
-			diningroomcabinet.tags.Add("cabinet");
-			diningroomcabinet.tags.Add("cabinets");
+			diningroomcabinet.tags.AddRange(new[] { "cupboard", "cupboards", "cabinet", "cabinets" });
 
 			diningRoom.Items.Add(diningroomcabinet);
 
@@ -432,10 +431,7 @@ namespace InteractiveFictionEngine
 				IsActionable = true
 			};
 
-			smallPaperScrap.tags.Add("paper");
-			smallPaperScrap.tags.Add("paper scrap");
-			smallPaperScrap.tags.Add("scrap of paper");
-			smallPaperScrap.tags.Add("burned paper");
+			smallPaperScrap.tags.AddRange(new[] { "paper", "paper scrap", "scrap of paper", "burned papaer" });
 
 			diningroomcabinet.ContainedItems.Add(smallPaperScrap);
 
@@ -467,9 +463,7 @@ namespace InteractiveFictionEngine
 				IsActionable = true
 			};
 
-			leftChair.tags.Add("first chair");
-			leftChair.tags.Add("1st chair");
-			leftChair.tags.Add("chair");
+			leftChair.tags.AddRange(new[] { "first chair", "1st chair", "chair" });
 
 			livingRoom.Items.Add(leftChair);
 
@@ -485,9 +479,7 @@ namespace InteractiveFictionEngine
 				IsActionable = true
 			};
 
-			leftChair.tags.Add("second chair");
-			leftChair.tags.Add("2nd chair");
-			rightChair.tags.Add("chair");
+			leftChair.tags.AddRange(new[] { "second chair", "2nd chair", "chair" });
 
 			livingRoom.Items.Add(rightChair);
 
@@ -502,10 +494,24 @@ namespace InteractiveFictionEngine
 				IsActionable = true
 			};
 
-			windows.tags.Add("window");
-			windows.tags.Add("windows");
+			windows.tags.AddRange(new[] { "window", "windows" });
 
 			livingRoom.Items.Add(windows);
+
+			ClimbableItem frontTree = new()
+			{
+				itemId = 13,
+				name = "Front Yard Tree",
+				description = "There is a tall sturdy tree here.",
+				IsListed = false,
+				IsVisible = true,
+				IsGettable = false,
+				IsActionable = true,
+				climbToRoom = treeTop
+			};
+
+			frontTree.tags.AddRange(new[] { "tree", "front tree", "yard tree", "front yard tree", "sturdy tree", "tall tree", "tall sturdy tree", "sturdy tall tree" });
+			driveway.Items.Add(frontTree);
 
 			#endregion
 
@@ -543,6 +549,7 @@ namespace InteractiveFictionEngine
 			Rooms.Add(downstairBedroom3.RoomId, downstairBedroom3);
 			Rooms.Add(mechanicalRoom.RoomId, mechanicalRoom);
 			Rooms.Add(coldRoom.RoomId, coldRoom);
+			Rooms.Add(treeTop.RoomId, treeTop);
 
 			#endregion
 

@@ -40,7 +40,7 @@ namespace InteractiveFictionEngine.Items
 			}
 		}
 
-		private void DoUnlock(IFCharacter character)
+		internal void DoUnlock(IFCharacter character)
 		{
 			if (exit == null)
 			{
@@ -61,7 +61,7 @@ namespace InteractiveFictionEngine.Items
 
 		}
 
-		private void DoLock(IFCharacter character)
+		internal void DoLock(IFCharacter character)
 		{
 			if (exit == null)
 			{

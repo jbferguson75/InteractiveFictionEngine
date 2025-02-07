@@ -28,6 +28,8 @@ namespace InteractiveFictionEngine
 		[Description("act")]
 		ACT,
 		[Description("sit")]
-		SIT
+		SIT,
+		[Description("climb")]
+		CLIMB
 	}
 }

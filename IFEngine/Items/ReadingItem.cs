@@ -35,7 +35,7 @@ namespace InteractiveFictionEngine.Items
 			}
 		}
 
-		private void DoRead(IFCharacter character)
+		internal void DoRead(IFCharacter character)
 		{
 			if (character.inventory.FindAll(o => o.itemId == itemId).Count > 0)
 			{

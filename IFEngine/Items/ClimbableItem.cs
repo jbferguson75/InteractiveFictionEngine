@@ -6,24 +6,18 @@ using System.Threading.Tasks;
 
 namespace InteractiveFictionEngine.Items
 {
-	internal class BasicItem : IFItem
+	internal class ClimbableItem : IFItem
 	{
-		public BasicItem() 
-		{
-		}
-
+		public IFRoom? climbToRoom;
 		public override void DoAction(IFManipulations manipulation, IFCharacter character, IFRoom room, string word = "")
 		{
-			switch (manipulation)
+			switch(manipulation)
 			{
+				case IFManipulations.CLIMB:
+					DoClimb(character);
+					break;
 				case IFManipulations.EXAMINE:
 					DoExamine();
-					break;
-				case IFManipulations.GET:
-					DoGet(character, room);
-					break;
-				case IFManipulations.DROP:
-					DoDrop(character, room);
 					break;
 				case IFManipulations.SEARCH:
 					DoSearch(character, room);
@@ -35,8 +29,15 @@ namespace InteractiveFictionEngine.Items
 					DoOther();
 					break;
 			}
+			if (manipulation == IFManipulations.CLIMB)
+			{
+				DoClimb(character);
+			}
 		}
 
-		
+		internal void DoClimb(IFCharacter character)
+		{
+			character.currentLocation = climbToRoom.RoomId;
+		}
 	}
 }
